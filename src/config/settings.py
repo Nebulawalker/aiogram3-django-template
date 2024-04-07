@@ -136,6 +136,6 @@ STATICFILES_DIRS = [STATIC_DIR]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ADMINS_ID = [int(admin.strip()) for admin in env('ADMINS_ID').split(',')]
+ADMINS_ID = set([admin.strip() for admin in env('ADMINS_ID').split(',')])
 
 BOT_TOKEN = env('BOT_TOKEN')
