@@ -2,7 +2,7 @@ from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
-from apps.bot.models import User
+from apps.bot.models import User, UserLogs
 
 
 class CollectData(BaseMiddleware):
@@ -10,7 +10,7 @@ class CollectData(BaseMiddleware):
             self,
             handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
             event: TelegramObject,
-            data: Dict[str, Any]
+            data: Dict[str, Any],
     ) -> Any:
         user = await User.objects.aupdate_or_create(
             telegram_id=event.from_user.id,
@@ -20,6 +20,10 @@ class CollectData(BaseMiddleware):
                 'last_name': event.from_user.last_name,
                 'is_premium': event.from_user.is_premium,
             }
+        )
+        await UserLogs.objects.acreate(
+            user=user[0],
+            message_body=event.text,
         )
         data.update({
             'user': user
@@ -43,6 +47,10 @@ class CollectCallbackData(BaseMiddleware):
                 'last_name': event.from_user.last_name,
                 'is_premium': event.from_user.is_premium,
             }
+        )
+        await UserLogs.objects.acreate(
+            user=user[0],
+            message_body=f'Button pressed {event.data}',
         )
         data.update({
             'user': user
