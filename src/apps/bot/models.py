@@ -31,7 +31,7 @@ class User(models.Model):
 
 
 class UserLogs(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     message_body = models.CharField(max_length=4096)
     message_sent_datetime = models.DateTimeField(auto_now_add=True)
 
