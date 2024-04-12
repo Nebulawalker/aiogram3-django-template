@@ -14,7 +14,6 @@ from pathlib import Path
 
 import environ
 
-
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -36,10 +35,10 @@ DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'mathfilters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.bot',
+    'apps.custom_auth',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -89,7 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -109,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -120,7 +117,6 @@ TIME_ZONE = env('TIME_ZONE')
 USE_I18N = env.bool('USE_I18N')
 
 USE_TZ = env.bool('USE_TZ')
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -139,3 +135,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ADMINS_ID = set([admin.strip() for admin in env('ADMINS_ID').split(',')])
 
 BOT_TOKEN = env('BOT_TOKEN')
+
+AUTH_USER_MODEL = 'custom_auth.CustomUser'
+
+JOKE_API_URL = env('JOKE_API_URL')
+
+REQUEST_TIMEOUT = 10
+
+MIN_SESSION_COOKIE_TIME = 30 * 60
+
