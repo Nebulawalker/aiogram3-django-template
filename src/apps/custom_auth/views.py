@@ -1,11 +1,13 @@
 from abc import ABC
 
 from django.conf import settings
+from django.http import HttpRequest
+from django.http.response import HttpResponse as HttpResponse
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from utils.mixins.not_logged import NotLoggedRequired
+from django.contrib.auth import logout
+from utils.auth.mixins import NotLoggedRequired
 
 
 # Create your views here.
@@ -24,6 +26,11 @@ class LoginAbstractView(ABC, NotLoggedRequired, generic.FormView):
 class SignupAbstractView(ABC, NotLoggedRequired, generic.CreateView):
     pass
 
+class LogoutAbstractView(ABC, LoginRequiredMixin, generic.RedirectView):
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super().get(request, *args, **kwargs)
 
 class ResetPasswordAbstractView(ABC, LoginRequiredMixin, generic.FormView):
     pass
